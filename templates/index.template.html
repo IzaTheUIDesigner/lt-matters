@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning and Teaching Matters | Nelson Mandela University</title>
+<meta name="description" content="Learning and Teaching Matters — news, workshops and staff development from the Learning and Teaching Office at Nelson Mandela University.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- TODO: replace src below with your downloaded banner image (800 x 600) -->
+<header class="site-header">
+  <div class="header-banner">
+    <img src="images/Learning and Teaching Matters.png" width="1200" height="800"
+         alt="Learning and Teaching Matters — newsletter banner">
+  </div>
+</header>
+
+<!-- Nav -->
+<nav class="site-nav" aria-label="Newsletter sections">
+  <div class="container">
+    <ul>
+      <li><a href="index.html">This Issue</a></li>
+      <li><a href="#teaching-innovation">Teaching Innovation</a></li>
+      <li><a href="#staff-development">Staff Development</a></li>
+      <li><a href="#digital-learning">Digital Learning</a></li>
+      <li><a href="#student-success">Student Success</a></li>
+      <li><a href="#events">Events &amp; Workshops</a></li>
+      <li><a href="#archive">Past Issues</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main-content">
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Lead stories">
+    <div class="hero-grid">
+<!-- BUILD:HERO -->
+<!-- /BUILD:HERO -->
+    </div>
+  </section>
+
+  <!-- Featured grid -->
+  <section aria-labelledby="featured-heading">
+    <div class="section-head">
+      <h2 id="featured-heading">In This Issue</h2>
+      <div class="rule"></div>
+      <span class="tag">{{FEATURED_COUNT}} stories</span>
+    </div>
+    <div class="story-grid">
+<!-- BUILD:FEATURED -->
+<!-- /BUILD:FEATURED -->
+    </div>
+  </section>
+
+  <!-- Latest + Sidebar -->
+  <section class="split" aria-label="Latest stories and resources">
+    <div>
+      <div class="section-head">
+        <h2>Latest Updates</h2>
+        <div class="rule"></div>
+      </div>
+
+<!-- BUILD:LATEST -->
+<!-- /BUILD:LATEST -->
+    </div>
+
+    <aside class="sidebar">
+      <div class="block">
+        <h3>Most Read This Issue</h3>
+<!-- BUILD:MOSTREAD -->
+<!-- /BUILD:MOSTREAD -->
+      </div>
+
+      <div class="cta-block">
+        <h3>Have a Story to Share?</h3>
+        <p>Tell us about a teaching innovation, workshop or student success story from your department.</p>
+        <a href="mailto:learningandteaching@mandela.ac.za" class="btn">Submit a Story</a>
+      </div>
+
+      <div class="calendar-card">
+        <div class="calendar-header">
+          <button type="button" class="calendar-nav" id="calendar-prev" aria-label="Previous month">&lsaquo;</button>
+          <div class="calendar-month" id="calendar-month"></div>
+          <button type="button" class="calendar-nav" id="calendar-next" aria-label="Next month">&rsaquo;</button>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+      </div>
+      <script>
+        (function () {
+          var monthEl = document.getElementById('calendar-month');
+          var gridEl = document.getElementById('calendar-grid');
+          var prevBtn = document.getElementById('calendar-prev');
+          var nextBtn = document.getElementById('calendar-next');
+
+          var realToday = new Date();
+          var viewYear = realToday.getFullYear();
+          var viewMonth = realToday.getMonth();
+
+          var monthNames = ["January","February","March","April","May","June",
+                             "July","August","September","October","November","December"];
+          var dow = ["S","M","T","W","T","F","S"];
+
+          function render() {
+            gridEl.innerHTML = '';
+            monthEl.textContent = monthNames[viewMonth] + " " + viewYear;
+
+            dow.forEach(function (d) {
+              var span = document.createElement('span');
+              span.className = 'calendar-dow';
+              span.textContent = d;
+              gridEl.appendChild(span);
+            });
+
+            var firstDay = new Date(viewYear, viewMonth, 1).getDay();
+            var daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+            for (var i = 0; i < firstDay; i++) {
+              gridEl.appendChild(document.createElement('span'));
+            }
+
+            var isCurrentMonth = (viewYear === realToday.getFullYear() && viewMonth === realToday.getMonth());
+
+            for (var d = 1; d <= daysInMonth; d++) {
+              var span = document.createElement('span');
+              span.textContent = d;
+              if (isCurrentMonth && d === realToday.getDate()) span.className = 'today';
+              gridEl.appendChild(span);
+            }
+          }
+
+          prevBtn.addEventListener('click', function () {
+            viewMonth -= 1;
+            if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+            render();
+          });
+
+          nextBtn.addEventListener('click', function () {
+            viewMonth += 1;
+            if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+            render();
+          });
+
+          render();
+        })();
+      </script>
+    </aside>
+  </section>
+
+  <!-- Category band -->
+  <section id="events" aria-labelledby="upcoming-heading">
+    <div class="section-head">
+      <h2 id="upcoming-heading">Upcoming Workshops</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="category-band">
+<!-- BUILD:WORKSHOPS -->
+<!-- /BUILD:WORKSHOPS -->
+    </div>
+  </section>
+
+</div>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div>
+      <h4>Learning and Teaching Matters</h4>
+      <p>A quarterly newsletter from the Learning and Teaching Office, Nelson Mandela University, sharing teaching innovation, staff development opportunities and student success stories from across our campuses.</p>
+    </div>
+    <div>
+      <h4>Sections</h4>
+      <ul>
+        <li><a href="index.html#teaching-innovation">Teaching Innovation</a></li>
+        <li><a href="index.html#staff-development">Staff Development</a></li>
+        <li><a href="index.html#digital-learning">Digital Learning</a></li>
+        <li><a href="index.html#student-success">Student Success</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in Touch</h4>
+      <ul>
+        <li><a href="mailto:learningandteaching@mandela.ac.za">learningandteaching@mandela.ac.za</a></li>
+        <li><a href="https://www.ltmandela.ac.za">mandela.ac.za</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 Nelson Mandela University — Learning &amp; Teaching Office</span>
+  </div>
+</footer>
+
+</body>
+</html>
+
