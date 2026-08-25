@@ -186,11 +186,36 @@
 
       <div class="video-block">
         <div class="stripe-label"><span>Featured Video</span></div>
-        <a href="https://www.youtube.com/watch?v=OphjuZltVtE&t=4s" target="_blank" rel="noopener" class="video-thumb">
+        <div class="video-thumb" data-video-id="OphjuZltVtE" role="button" tabindex="0" aria-label="Play video: Watch: Student Voice Series">
           <img src="images/thumnail.jpg" alt="">
           <span class="play-btn"></span>
-        </a>
-        <a href="https://www.youtube.com/watch?v=OphjuZltVtE&t=4s" target="_blank" rel="noopener" class="video-title">Watch: Student Voice Series</a>
+        </div>
+        <a href="#" class="video-title" data-video-id="OphjuZltVtE">Watch: Student Voice Series</a>
+        <script>
+          (function () {
+            function playInline(container) {
+              var id = container.getAttribute('data-video-id');
+              container.innerHTML =
+                '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1" ' +
+                'title="YouTube video player" frameborder="0" ' +
+                'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+                'allowfullscreen></iframe>';
+            }
+            document.querySelectorAll('.video-thumb[data-video-id]').forEach(function (thumb) {
+              thumb.addEventListener('click', function () { playInline(thumb); });
+              thumb.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playInline(thumb); }
+              });
+            });
+            document.querySelectorAll('a.video-title[data-video-id]').forEach(function (link) {
+              link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var thumb = link.closest('.video-block').querySelector('.video-thumb[data-video-id]');
+                if (thumb) playInline(thumb);
+              });
+            });
+          })();
+        </script>
         <div class="video-meta">Posted on: 21 August 2026</div>
         <ul class="video-list">
           <li><a href="#"><span class="cam-icon"></span>How do we humanize teaching at Nelson Mandela University?</a></li>
