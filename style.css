@@ -386,3 +386,27 @@ a:focus-visible, button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* ---------- Header banner — mobile crop fix ---------- */
+/* The banner is one flat image with text baked in, so on narrow screens */
+/* everything shrinks proportionally with the width. This crops in from */
+/* the left on mobile so the text side stays legible instead of tiny. */
+@media (max-width: 600px) {
+  .header-banner {
+    height: 300px;
+    overflow: hidden;
+  }
+  .header-banner img {
+    width: auto;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: right center;
+    margin: 0;
+  }
+}
+@media (max-width: 400px) {
+  .header-banner {
+    height: 260px;
+  }
+}
