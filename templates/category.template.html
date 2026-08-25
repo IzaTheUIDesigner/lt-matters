@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{TITLE}} | Learning and Teaching Matters</title>
-<meta name="description" content="{{DEK}}">
+<title>{{CATEGORY}} | Learning and Teaching Matters</title>
+<meta name="description" content="All {{CATEGORY}} stories from Learning and Teaching Matters, Nelson Mandela University.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,38 +33,21 @@
 </nav>
 
 <main id="main-content">
+<div class="container">
 
-  <div class="article-header">
-    <div class="breadcrumb"><a href="index.html">This Issue</a> &nbsp;/&nbsp; {{CATEGORY}}</div>
-    <span class="category-pill">{{CATEGORY}}</span>
-    <h1>{{TITLE}}</h1>
-    <p class="dek">{{DEK}}</p>
-    <div class="byline-row">
-      <span>{{BYLINE}}</span>
-      <span>{{DATE}}</span>
+  <section aria-labelledby="category-heading">
+    <div class="section-head">
+      <h2 id="category-heading">{{CATEGORY}}</h2>
+      <div class="rule"></div>
+      <span class="tag">{{COUNT}} {{ARTICLE_WORD}}</span>
     </div>
-  </div>
-
-  <div class="article-hero-media">
-    <img src="{{IMAGE}}" alt="{{TITLE}}">
-  </div>
-
-  <div class="article-body">
-    <p>TODO: write the article body here. Replace this paragraph and the ones below with the real story.</p>
-
-    <p>TODO: second paragraph.</p>
-
-    <h2>TODO: subheading</h2>
-
-    <p>TODO: paragraph under the subheading.</p>
-
-    <blockquote>"TODO: pull quote." — TODO, attribution</blockquote>
-
-    <div class="tag-row">
-      <a href="index.html">{{CATEGORY}}</a>
+    <div class="story-grid">
+<!-- BUILD:CARDS -->
+<!-- /BUILD:CARDS -->
     </div>
-  </div>
+  </section>
 
+</div>
 </main>
 
 <footer class="site-footer">
@@ -95,6 +78,6 @@
   </div>
 </footer>
 
+<script src="nav.js"></script>
 </body>
 </html>
-

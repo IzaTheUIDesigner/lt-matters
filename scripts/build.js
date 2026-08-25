@@ -19,7 +19,20 @@ const ARTICLES_PATH = path.join(ROOT, 'data', 'articles.json');
 const LAYOUT_PATH = path.join(ROOT, 'data', 'layout.json');
 const INDEX_TEMPLATE_PATH = path.join(ROOT, 'templates', 'index.template.html');
 const ARTICLE_TEMPLATE_PATH = path.join(ROOT, 'templates', 'article.template.html');
+const CATEGORY_TEMPLATE_PATH = path.join(ROOT, 'templates', 'category.template.html');
 const INDEX_OUT_PATH = path.join(ROOT, 'index.html');
+
+// Nav category label -> slug used for category-<slug>.html, and the exact
+// `category` value(s) in articles.json that page should collect.
+// Categories in articles.json with no entry here (Learning and Teaching,
+// Events, Curriculum Design, Awards & Recognition) don't have a nav link
+// and are intentionally left out.
+const CATEGORY_PAGES = [
+  { label: 'Teaching Innovation', slug: 'teaching-innovation', values: ['Teaching Innovation'] },
+  { label: 'Staff Development', slug: 'staff-development', values: ['Staff Development'] },
+  { label: 'Digital Learning', slug: 'digital-learning', values: ['Digital Learning'] },
+  { label: 'Student Success', slug: 'student-success', values: ['Student Success'] },
+];
 
 function readJSON(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -118,6 +131,62 @@ function renderWorkshops(articles, layout) {
   }).join('\n');
 }
 
+function renderCategoryCards(articles, slugs) {
+  return slugs.map(slug => {
+    const a = articles[slug];
+    const thumbClass = a.thumbClass ? `thumb ${a.thumbClass}` : 'thumb';
+    const img = a.image ? `<img src="${esc(a.image)}" alt="" class="thumb-img">` : '';
+    const metaRight = a.date || a.workshopDate || '';
+    const meta = metaRight ? `${esc(a.category)} &middot; ${esc(metaRight)}` : esc(a.category);
+    return `      <article class="story-card">
+        <div class="${thumbClass}">${img}<span class="category-pill">${esc(a.category)}</span></div>
+        <div class="body">
+          <h3><a href="${href(slug)}">${esc(a.title)}</a></h3>
+          <p>${esc(a.dek)}</p>
+          <div class="meta">${meta}</div>
+        </div>
+      </article>`;
+  }).join('\n\n');
+}
+
+// ---------- Category archive pages ----------
+// Independent of the main index build/template above (which is currently
+// out of sync with the hand-edited index.html — see README/summary notes).
+// This only ever writes category-*.html files, never index.html.
+
+function buildCategoryPages() {
+  const articles = readJSON(ARTICLES_PATH);
+  const tplSrc = fs.readFileSync(CATEGORY_TEMPLATE_PATH, 'utf8');
+
+  const results = [];
+
+  for (const page of CATEGORY_PAGES) {
+    const slugs = Object.keys(articles).filter(slug => page.values.includes(articles[slug].category));
+
+    if (slugs.length === 0) {
+      console.warn(`WARNING: category "${page.label}" has zero matching articles in articles.json`);
+    }
+
+    let tpl = tplSrc
+      .replace(/{{CATEGORY}}/g, page.label)
+      .replace(/{{COUNT}}/g, slugs.length)
+      .replace(/{{ARTICLE_WORD}}/g, slugs.length === 1 ? 'story' : 'stories');
+
+    const cardsHtml = renderCategoryCards(articles, slugs);
+    const re = /<!-- BUILD:CARDS -->[\s\S]*?<!-- \/BUILD:CARDS -->/;
+    tpl = tpl.replace(re, `<!-- BUILD:CARDS -->\n${cardsHtml}\n<!-- /BUILD:CARDS -->`);
+
+    const outPath = path.join(ROOT, `category-${page.slug}.html`);
+    fs.writeFileSync(outPath, tpl, 'utf8');
+    results.push({ label: page.label, slug: page.slug, count: slugs.length });
+  }
+
+  for (const r of results) {
+    console.log(`Built category-${r.slug}.html — ${r.count} article(s) in "${r.label}"`);
+  }
+  return results;
+}
+
 // ---------- Build command ----------
 
 function build() {
@@ -209,9 +278,12 @@ if (cmd === 'build') {
     process.exit(1);
   }
   scaffold(arg);
+} else if (cmd === 'categories') {
+  buildCategoryPages();
 } else {
   console.log('Usage:');
   console.log('  node scripts/build.js build          Regenerate index.html from data/*.json');
   console.log('  node scripts/build.js new "<title>"  Scaffold a new article + stub metadata');
+  console.log('  node scripts/build.js categories     Regenerate category-*.html archive pages from articles.json');
 }
 
