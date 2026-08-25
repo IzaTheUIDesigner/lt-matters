@@ -511,3 +511,8 @@ a:focus-visible, button:focus-visible {
   .site-nav ul { display: none; }
   .site-nav.nav-open ul { display: flex; }
 }
+
+/* Fix oversized gap between last section and footer on mobile */
+@media (max-width: 700px) {
+  .site-footer { margin-top: 24px; }
+}
